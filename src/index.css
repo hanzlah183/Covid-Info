@@ -1,0 +1,98 @@
+@import "~antd/dist/antd.css";
+
+#components-layout-demo-side .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.header-color {
+  background: rgb(19, 42, 87);
+}
+
+.text-color {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.case {
+  font-size: 2rem;
+  color: rgb(7, 94, 134);
+}
+.recover {
+  font-size: 2rem;
+  color: green;
+}
+.death {
+  font-size: 2rem;
+  color: rgb(226, 57, 6)
+}
+.fatality {
+  font-size: 2rem;
+  color: rgb(153, 153, 22)
+}
+.virus {
+  font-size: 2rem;
+}
+.active {
+  font-size: 2rem;
+  color: rgb(250, 174, 34)
+}
+.critical {
+  font-size: 2rem;
+  color: rgb(214, 44, 44)
+}
+.flag {
+  font-size: 3rem;
+}
+
+body::-webkit-scrollbar {
+  width: 1em;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px #001529;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(13, 64, 109);
+  outline: 1px solid#1E88E5;
+}
+
+.marker-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.marker-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: rgb(189, 37, 37);
+  opacity: 0.7;
+}
+
+.country {
+  color: rgb(32, 29, 29);
+}
+
+.deaths {
+  color: red;
+}
+
+.recov {
+  color: green;
+}
+
+.activ {
+  color: orange;
+}

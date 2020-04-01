@@ -18,7 +18,6 @@ const Map = ({ long, lat }) => {
     getData();
   }, []);
 
-
   const getData = async () => {
     try {
       const res = await Axios.get(`https://corona.lmao.ninja/countries`);
@@ -47,7 +46,9 @@ const Map = ({ long, lat }) => {
       ) : (
         <ReactMapGl
           {...viewPort}
-          mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN}
+          mapboxApiAccessToken={
+            "pk.eyJ1IjoiaGFuemxhaCIsImEiOiJjazhia3Y4eGcwZDVkM3BxdGRsY3R6Njk3In0.Ll_3c8Q-jFUNoyfShtxm8A"
+          }
           onViewportChange={viewPort => {
             setviewPort(viewPort);
           }}

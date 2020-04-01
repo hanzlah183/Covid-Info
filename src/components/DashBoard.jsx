@@ -44,7 +44,7 @@ const DashBoard = () => {
       setLoadingCountry(false);
       setCountry(res.data);
     } catch (error) {
-      window.alert(error.response.data.message);
+      console.log(error.response);
     }
   };
 

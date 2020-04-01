@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import Moment from "react-moment";
+import React, { useState } from "react";
 
 import Tabl from "./components/Table";
 import DashBoard from "./components/DashBoard";
@@ -14,11 +13,6 @@ const { Sider, Header, Footer } = Layout;
 function App() {
   const [state, setstate] = useState({ collapsed: false });
   const [table, settable] = useState({ value: false });
-  const [childData, setChildData] = useState("");
-
-  useEffect(() => {
-    onClick1();
-  }, [settable]);
 
   const onCollapse = collapsed => {
     setstate({ collapsed });
@@ -31,8 +25,6 @@ function App() {
   const onClick1 = () => {
     settable({ value: false });
   };
-
-  const date = new Date(childData);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -48,12 +40,6 @@ function App() {
             <span>Cases Ranking</span>
           </Menu.Item>
         </Menu>
-        <Text className="text-color side-text">
-          <font>
-            Last-Update:
-            <Moment>{date}</Moment>
-          </font>
-        </Text>
       </Sider>
       <Layout className="site-layout">
         <Header className=" header-color" style={{ padding: 0 }}>
@@ -64,10 +50,13 @@ function App() {
             </font>
           </Text>
         </Header>
-        {table.value ? <Tabl /> : <DashBoard callBack={setChildData} />}
+        {table.value ? <Tabl /> : <DashBoard />}
         <Footer style={{ textAlign: "center" }}>
           <Text strong>
             Data Source From WorldoMeter, (JHU CSSE GISand Data)
+          </Text><br />
+          <Text>
+            <font>Developed By Hanzlah</font>
           </Text>
         </Footer>
       </Layout>

@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Moment from "react-moment";
+
 import Search from "./Search";
 import Map from "./Map";
+import Graph from "./Graph";
+
 //Ant-design components
 import { Layout, Typography, Card, Row, Col, Avatar } from "antd";
 
 const { Content } = Layout;
 const { Meta } = Card;
 
-const DashBoard = ({ callBack }) => {
+const DashBoard = () => {
   const [data, setdata] = useState({});
   const [loading, setloading] = useState(true);
   const [search, setSearch] = useState({ name: "" });
   const [country, setCountry] = useState({});
   const [loadingCountry, setLoadingCountry] = useState(true);
+  const [chart, setChart] = useState({});
 
   useEffect(() => {
     getData();
     getDataByCountry("pakistan");
+    getHistoryByCountry("pakistan");
   }, [setdata, loading, setCountry]);
 
   const getData = async () => {
@@ -38,12 +44,84 @@ const DashBoard = ({ callBack }) => {
       setLoadingCountry(false);
       setCountry(res.data);
     } catch (error) {
-      console.log(error.message);
+      window.alert(error.response.data.message);
     }
   };
 
-  //passing props from child to parent
-  callBack(data.updated);
+  const getHistoryByCountry = async country => {
+    try {
+      const res = await axios.get(
+        `https://corona.lmao.ninja/v2/historical/${country}`
+      );
+      setChart({
+        labels: Object.keys(res.data.timeline.cases),
+        datasets: [
+          {
+            label: "Cases",
+            fill: false,
+            lineTension: 0.58,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: "round",
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 3,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 3.5,
+            pointHitRadius: 10,
+            data: Object.values(res.data.timeline.cases)
+          },
+          {
+            label: "Deaths",
+            fill: false,
+            lineTension: 0.58,
+            backgroundColor: "rgba(204, 62, 19, 0.986)",
+            borderColor: "rgba(204, 62, 19, 0.986)",
+            borderCapStyle: "round",
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(204, 62, 19, 0.986)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 3,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(204, 62, 19, 0.986)",
+            pointHoverBorderColor: "rgba(204, 62, 19, 0.986)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 3.5,
+            pointHitRadius: 10,
+            data: Object.values(res.data.timeline.deaths)
+          },
+          {
+            label: "Recovered",
+            fill: false,
+            lineTension: 0.58,
+            backgroundColor: "rgba(15, 199, 61)",
+            borderColor: "rgba(15, 199, 61)",
+            borderCapStyle: "round",
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(15, 199, 61)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 3,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(15, 199, 61)",
+            pointHoverBorderColor: "rgba(15, 199, 61)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 3.5,
+            pointHitRadius: 10,
+            data: Object.values(res.data.timeline.recovered)
+          }
+        ]
+      });
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  };
+
+  //parsing date to original format
+  const date = new Date(data.updated);
 
   //calculating fatality rate
   const decimal = (data.deaths / data.cases) * 100;
@@ -57,6 +135,7 @@ const DashBoard = ({ callBack }) => {
     setLoadingCountry(true);
     e.preventDefault();
     getDataByCountry(search.name);
+    getHistoryByCountry(search.name);
   };
 
   //getting flag and longitude and latitude because this is nested object
@@ -70,6 +149,11 @@ const DashBoard = ({ callBack }) => {
         className="site-layout-background"
         style={{ padding: 24, minHeight: 360, margin: "16px 0" }}
       >
+        <Typography.Text>
+          <font style={{ paddingLeft: 310 }}>
+            Last-Update: <Moment date={date} />
+          </font>
+        </Typography.Text>
         <Typography.Text strong>
           <h3>World-Wide</h3>
         </Typography.Text>
@@ -292,8 +376,13 @@ const DashBoard = ({ callBack }) => {
           </Col>
         </Row>
         <Row style={{ paddingTop: 32 }}>
+          <Col span={24}>
+            <Graph chart={chart} country={country.country} />
+          </Col>
+        </Row>
+        <Row style={{ paddingTop: 25 }}>
           <Typography.Text strong>
-            <h3>Heat Map</h3>
+            <h3>Infected Countries</h3>
           </Typography.Text>
           <Col span={24}>
             <Map long={longitude} lat={latitude} />
